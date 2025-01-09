@@ -1,0 +1,26 @@
+# Node modules
+node_modules/
+
+# Build output
+dist/
+build/
+
+# Chrome extension-specific files
+*.zip
+
+# Sensitive files
+.env
+*.key
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+npm-debug.log*
+
+# IDE-specific files
+.idea/
+.vscode/
+*.iml

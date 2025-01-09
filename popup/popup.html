@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Live Class NoteTaker</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Live Notetaker</h1>
+    </header>
+
+    <div class="settings">
+      <label>Audio Source:</label>
+      <div>
+        <label>
+          <input type="radio" name="audio-source" value="tab" checked>
+          Current Tab
+        </label>
+        <label>
+          <input type="radio" name="audio-source" value="mic">
+          Microphone
+        </label>
+      </div>
+    </div>
+
+    <div class="actions">
+      <button id="start-recording">Start Recording</button>
+      <button id="stop-recording" disabled>Stop Recording</button>
+    </div>
+
+    <div id="output">
+      <h2>Transcript:</h2>
+      <p id="transcript"></p>
+      <h2>Notes:</h2>
+      <p id="notes"></p>
+    </div>
+  </div>
+  <script src="popup.js"></script>
+</body>
+</html>
