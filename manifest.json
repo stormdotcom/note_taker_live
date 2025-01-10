@@ -3,10 +3,20 @@
   "name": "Live Class NoteTaker",
   "version": "1.0",
   "description": "Take live notes from video classes using AI.",
-  "permissions": ["activeTab", "audioCapture", "storage"],
+  "host_permissions": [
+    "http://localhost:6060/*",
+    "https://api.ajmalnasumudeen.in/*"
+  ],
+  "permissions": [
+    "tabCapture",
+    "microphone",
+    "storage",
+    "activeTab"
+  ],
   "background": {
     "service_worker": "background.js"
   },
+
   "action": {
     "default_popup": "popup/popup.html",
     "default_icon": "assets/icon.png"
@@ -15,8 +25,5 @@
     "16": "assets/icon.png",
     "48": "assets/icon.png",
     "128": "assets/icon.png"
-  },
-  "host_permissions": [
-    "*://*/*"
-  ]
+  }
 }

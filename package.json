@@ -2,10 +2,18 @@
   "name": "live-class-notetaker",
   "version": "1.0.0",
   "description": "A note taking app for live class",
+  "author": "Ajmal Nasumudeen",
   "main": "background.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
+  "keywords": [
+    "note",
+    "class",
+    "live"
+  ],
+  "contributors": [
+    "Ajmal Nasumudeen"
+  ],
   "license": "ISC"
 }
