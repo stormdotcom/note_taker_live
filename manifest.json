@@ -1,13 +1,14 @@
 {
   "manifest_version": 3,
-  "name": "Live Class NoteTaker",
+  "name": "Quick Note AI",
   "version": "1.0",
   "description": "Take live notes from video classes using AI.",
   "host_permissions": [
     "http://localhost:8000/*",
-    "https://llm-service-api-435l.onrender.com/*"
+    "https://llm-service-api-435l.onrender.com/*",
+    "https://ajmalnasumudeen.in/*"
   ],
-  "permissions": [ "tabs", "tabCapture", "activeTab", "cookies", "storage", "notifications", "offscreen" ],
+  "permissions": [ "tabs", "tabCapture", "activeTab", "cookies", "storage"],
   "background": {
     "service_worker": "background.js"
   },

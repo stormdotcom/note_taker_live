@@ -1,5 +1,5 @@
 chrome.runtime.onInstalled.addListener(() => {
-    console.log("Live Class NoteTaker Extension Installed");
+    console.log("QuickNote Extension Installed");
 
     
   });
