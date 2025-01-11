@@ -11,6 +11,7 @@ document.addEventListener("DOMContentLoaded", () => {
   document.getElementById("start").addEventListener("click", async () => {
     const source = document.querySelector('input[name="audio-source"]:checked')?.value;
     startTimer();
+    startRecording()
     if (!source) {
       alert("Please select an audio source.");
       return;
@@ -119,24 +120,4 @@ document.addEventListener("DOMContentLoaded", () => {
     URL.revokeObjectURL(url);
   }
 });
-
-let timer;
-let seconds = 0;
-
-function startTimer() {
-  timer = setInterval(() => {
-    seconds++;
-    document.getElementById("timer").innerText = formatTime(seconds);
-  }, 1000);
-}
-
-function stopTimer() {
-  clearInterval(timer);
-}
-
-function formatTime(sec) {
-  const minutes = Math.floor(sec / 60);
-  const seconds = sec % 60;
-  return `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
-}
 
