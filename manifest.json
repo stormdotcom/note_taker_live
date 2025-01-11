@@ -4,15 +4,10 @@
   "version": "1.0",
   "description": "Take live notes from video classes using AI.",
   "host_permissions": [
-    "http://localhost:6060/*",
-    "https://api.ajmalnasumudeen.in/*"
+    "http://localhost:8000/*",
+    "https://llm-service-api-435l.onrender.com/*"
   ],
-  "permissions": [
-    "tabCapture",
-    "microphone",
-    "storage",
-    "activeTab"
-  ],
+  "permissions": [ "tabs", "tabCapture", "activeTab", "cookies", "storage", "notifications", "offscreen" ],
   "background": {
     "service_worker": "background.js"
   },
@@ -21,6 +16,9 @@
     "default_popup": "popup/popup.html",
     "default_icon": "assets/icon.png"
   },
+  "content_security_policy": {
+  "extension_pages": "script-src 'self'; object-src 'self'"
+},
   "icons": {
     "16": "assets/icon.png",
     "48": "assets/icon.png",

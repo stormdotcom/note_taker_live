@@ -1,34 +1,39 @@
-importScripts('https://cdn.jsdelivr.net/npm/opus-media-recorder@latest/OpusMediaRecorder.umd.js');
+try {
+  importScripts('../libs/OpusMediaRecorder.umd.js');
+} catch (error) {
+  console.error("Failed to load OpusMediaRecorder script:", error);
+}
 
-let encoder;
 let apiKey = "";
 let apiEndpoint = "";
 
 self.onmessage = function (e) {
-  const { command, data } = e.data;
+  try {
+    const { command, data } = e.data || {};
 
-  if (command === 'init') {
-    apiKey = data.apiKey;
-    apiEndpoint = data.apiEndpoint;
+    if (command === 'init') {
+      apiKey = data.apiKey;
+      apiEndpoint = data.apiEndpoint;
+    }
 
-    encoder = new OpusMediaRecorder(data.stream, { mimeType: 'audio/ogg; codecs=opus' });
-
-    encoder.addEventListener('dataavailable', async (event) => {
-      const audioBlob = event.data;
-      if (audioBlob.size >= 16 * 1024) {  // 16 KB chunk size
-        await sendToAPI(audioBlob);
+    if (command === 'process') {
+      const audioBlob = data;
+      if (audioBlob && audioBlob.size >= 512 * 1024)  {
+        sendToAPI(audioBlob);
       }
-    });
+    }
 
-    encoder.start(1000); // Capture every second
-  }
+    if (command === 'stop') {
+      self.close();  // Stops the worker
+    }
 
-  if (command === 'stop') {
-    encoder.stop();
+  } catch (error) {
+    console.error("Error in worker message handler:", error);
   }
 };
 
 async function sendToAPI(audioBlob) {
+  console.log("Uploading audio to API...");
   const formData = new FormData();
   formData.append("file", audioBlob);
 
@@ -36,6 +41,7 @@ async function sendToAPI(audioBlob) {
     const response = await fetch(apiEndpoint, {
       method: "POST",
       headers: {
+        "Content-Type": "audio/webm",
         Authorization: apiKey,
       },
       body: formData
@@ -43,6 +49,7 @@ async function sendToAPI(audioBlob) {
 
     const result = await response.json();
     self.postMessage({ type: 'update', data: result.data });
+
   } catch (error) {
     console.error("Error uploading audio:", error);
   }
