@@ -1,47 +1,116 @@
 /* General Styling */
 body {
-    font-family: 'Roboto', Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    width: 300px;
-    background-color: #f9f9f9;
-    color: #333;
-  }
-  
-  .container {
-    padding: 15px;
-    border-radius: 10px;
-    border: 2px solid #007bff; /* Modern blue border */
-    background-color: #fff;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  }
-  
-  /* Header Styling */
-  header {
-    text-align: center;
-    margin-bottom: 15px;
-  }
-  
-  header h1 {
-    font-size: 20px;
-    color: #007bff; /* Modern blue color */
-    margin: 0;
-  }
-  
-  /* Settings Section */
-  .settings {
-    margin-bottom: 20px;
-  }
-  
-  .settings label {
-    font-weight: bold;
-    font-size: 14px;
-    color: #555;
-  }
-  
-  .settings div label {
-    display: flex;
-    align-items: center;
-    margin-top: 5px;
-    font-size:
-  
+  font-family: 'Roboto', Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  width: 320px;
+  background-color: #f4f4f4;
+  color: #333;
+}
+
+/* Container */
+.container {
+  padding: 20px;
+  border-radius: 15px;
+  background-color: #fff;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+/* Header */
+header h1 {
+  font-size: 18px;
+  margin-bottom: 10px;
+  color: #007bff;
+}
+
+/* Status Display */
+.status {
+  margin: 20px 0;
+}
+
+#recording-status {
+  font-weight: bold;
+  color: #FF5733;
+  margin-bottom: 10px;
+}
+
+#timer {
+  font-size: 32px;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 5px;
+}
+
+#remaining-time {
+  font-size: 12px;
+  color: #999;
+}
+
+/* Progress Bar */
+.progress-bar {
+  width: 100%;
+  background-color: #ddd;
+  border-radius: 5px;
+  overflow: hidden;
+  margin-bottom: 10px;
+}
+
+#progress {
+  width: 0%;
+  height: 8px;
+  background-color: #4CAF50;
+  transition: width 0.5s;
+}
+
+/* Settings Section */
+.settings {
+  margin-bottom: 20px;
+  text-align: left;
+}
+
+.settings label {
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.settings div label {
+  display: block;
+  margin-top: 8px;
+  font-size: 13px;
+}
+
+/* Action Buttons */
+.actions button {
+  width: 130px;
+  padding: 10px;
+  margin: 5px;
+  border: none;
+  border-radius: 25px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+#start {
+  background-color: #28a745;
+  color: #fff;
+}
+
+#start:hover {
+  background-color: #218838;
+}
+
+#stop {
+  background-color: #dc3545;
+  color: #fff;
+}
+
+#stop:hover {
+  background-color: #c82333;
+}
+
+#stop:disabled {
+  background-color: #f5c6cb;
+  cursor: not-allowed;
+}

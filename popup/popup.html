@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Live Class NoteTaker</title>
+  <title>Live Note Taker AI</title>
   <link rel="stylesheet" href="popup.css">
 </head>
 <body>
@@ -12,17 +12,20 @@
       <h1>Live Note Taker AI</h1>
     </header>
 
+    <div class="status">
+      <p id="recording-status">Not Recording</p>
+      <div class="progress-bar">
+        <div id="progress"></div>
+      </div>
+      <p id="timer">00:00</p>
+      <p id="remaining-time">Remaining: 05:00</p>
+    </div>
+
     <div class="settings">
       <label>Audio Source:</label>
       <div>
-        <label>
-          <input type="radio" name="audio-source" value="tab" checked>
-          Current Tab
-        </label>
-        <label>
-          <input type="radio" name="audio-source" value="mic">
-          Microphone
-        </label>
+        <label><input type="radio" name="audio-source" value="tab" checked> Current Tab</label>
+        <label><input type="radio" name="audio-source" value="mic"> Microphone</label>
       </div>
     </div>
 
@@ -31,6 +34,7 @@
       <button id="stop" disabled>Stop Recording</button>
     </div>
   </div>
+
   <script src="popup.js"></script>
 </body>
 </html>
