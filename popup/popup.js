@@ -2,13 +2,14 @@ document.addEventListener("DOMContentLoaded", () => {
   let audioStream = null;
   let mediaRecorder = null;
   let audioBuffer = [];
-  const BUFFER_LIMIT = 2000 * 1024;  // 2mb
+  const BUFFER_LIMIT = 800 * 1024;  // 1mb
 
   const local = true;
   const HOST = local ? "http://localhost:8000" : "https://llm-service-api-435l.onrender.com";
   const API_ENDPOINT = `${HOST}/upload/audio`;
-
+  let sessionId=""
   document.getElementById("start").addEventListener("click", async () => {
+     sessionId = await generateSessionId()
     const source = document.querySelector('input[name="audio-source"]:checked')?.value;
     startTimer();
     startRecording()
@@ -67,6 +68,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (mediaRecorder && mediaRecorder.state !== "inactive") {
       mediaRecorder.stop();
       stopTimer();
+         sessionId=""
     }
 
     if (audioStream) {
@@ -84,7 +86,7 @@ document.addEventListener("DOMContentLoaded", () => {
   async function sendAudioToAPI(audioBlob) {
     const formData = new FormData();
     formData.append('file', new File([audioBlob],"audio.webm", { type: 'audio/webm' }));
-
+    formData.append('sessionId', sessionId)
     try {
       const response = await fetch(API_ENDPOINT, {
         method: "POST",
@@ -104,6 +106,7 @@ document.addEventListener("DOMContentLoaded", () => {
       }
 
     } catch (error) {
+
       console.error("Error uploading audio:", error);
     }
   }

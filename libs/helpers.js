@@ -55,3 +55,31 @@ function stopRecording() {
   progressBar.classList.remove("wave"); // Remove wave effect
   progressBar.style.width = "0%"; // Reset progress bar
 }
+
+
+const generateSessionId = async () => {
+  try {
+
+    const userId = await new Promise((resolve) => {
+      chrome.storage.local.get(["userId"], (result) => {
+        resolve(result.userId || "guest");
+      });
+    });
+
+    // Get current timestamp
+    const timestamp = Date.now();
+
+    // Generate a simple machine code using the user agent (browser fingerprint)
+    const machineCode = btoa(navigator.userAgent).substring(0, 8);
+
+    // Combine all parts to form the session ID
+    const sessionId = `${userId}-${timestamp}-${machineCode}`;
+
+    console.log("Generated Session ID:", sessionId);
+
+    return sessionId;
+  } catch (error) {
+    console.error("Failed to generate session ID:", error);
+    return null;
+  }
+};
