@@ -3,8 +3,8 @@ document.addEventListener("DOMContentLoaded", () => {
     let audioStream = null;
     let opusWorker = null;
     let audioBuffer = [];  // Buffer to store audio chunks
-    const BUFFER_LIMIT = 5 * 1024;  // 512 KB
-  
+    const BUFFER_LIMIT = 512  * 1024;  // 512 KB
+    console.log("here")
     const local = true;
     const HOST = local ? "http://localhost:8000" : "https://llm-service-api-435l.onrender.com";
     const API_ENDPOINT = `${HOST}/upload/audio`;
@@ -19,26 +19,23 @@ document.addEventListener("DOMContentLoaded", () => {
       }
   
       try {
+        console.log(source ,"source")
         audioStream = source === "mic"
-          ? await navigator.mediaDevices.getUserMedia({ audio: true })
-          : await new Promise((resolve, reject) => {
-              chrome.tabCapture.capture({
-                audio: true,
-                video: false,
-                audioConstraints: {
-                  mandatory: {
-                    echoCancellation: false,
-                    chromeMediaSource: 'tab',
-                    googDucking: false
-                  }
-                }
-              }, (stream) => {
-                if (chrome.runtime.lastError) {
-                  return reject(chrome.runtime.lastError.message);
-                }
-                stream ? resolve(stream) : reject("Failed to capture tab audio.");
-              });
+        ? await navigator.mediaDevices.getUserMedia({ audio: true })
+        : await new Promise((resolve, reject) => {
+            chrome.tabCapture.capture({ audio: true, video: false }, (stream) => {
+              if (chrome.runtime.lastError) {
+                reject(chrome.runtime.lastError.message);
+              } else {
+                resolve(stream);
+  
+                // ✅ Preserve system audio
+                const audioContext = new AudioContext();
+                const sourceNode = audioContext.createMediaStreamSource(stream);
+                sourceNode.connect(audioContext.destination); 
+              }
             });
+          });
   
         // Initialize Opus Encoder Worker
         opusWorker = new Worker('opusEncoderWorker.js');

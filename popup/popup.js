@@ -19,44 +19,9 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     try {
-      audioStream = source === "mic"
-        ? await navigator.mediaDevices.getUserMedia({ audio: true })
-        : await new Promise((resolve, reject) => {
-            chrome.tabCapture.capture({
-              audio: true,
-              video: false
-            }, (stream) => {
-              if (chrome.runtime.lastError) {
-                return reject(chrome.runtime.lastError.message);
-              }
-              stream ? resolve(stream) : reject("Failed to capture tab audio.");
-            });
-          });
+      captureTabAudio(sessionId)
 
-      // Initialize MediaRecorder with correct MIME type
-      mediaRecorder = new MediaRecorder(audioStream, { mimeType: 'audio/webm' });
-
-      mediaRecorder.ondataavailable = (event) => {
-        if (event.data.size > 0) {
-          audioBuffer.push(event.data);
-
-          // Check if the buffer size limit is reached
-          const totalSize = audioBuffer.reduce((acc, chunk) => acc + chunk.size, 0);
-
-          if (totalSize >= BUFFER_LIMIT) {
-            const combinedBlob = new Blob(audioBuffer, { type: 'audio/webm' });
-
-            // Upload to backend
-            sendAudioToAPI(combinedBlob);
-            audioBuffer = [];  // Clear buffer after sending
-          }
-        }
-      };
-
-      mediaRecorder.start(1000);  // Record every second
-
-      document.getElementById("start").disabled = true;
-      document.getElementById("stop").disabled = false;
+      
 
     } catch (error) {
       alert(`Error: ${error}`);
@@ -86,6 +51,7 @@ document.addEventListener("DOMContentLoaded", () => {
   async function sendAudioToAPI(audioBlob) {
     const formData = new FormData();
     formData.append('file', new File([audioBlob],"audio.webm", { type: 'audio/webm' }));
+    formData.append('sessionId', sessionId);
     try {
       const response = await fetch(API_ENDPOINT, {
         method: "POST",

@@ -8,7 +8,7 @@
     "https://llm-service-api-435l.onrender.com/*",
     "https://ajmalnasumudeen.in/*"
   ],
-  "permissions": [ "tabs", "tabCapture", "activeTab", "cookies", "storage"],
+  "permissions": [ "tabs", "tabCapture", "activeTab", "background", "storage"],
   "background": {
     "service_worker": "background.js"
   },

@@ -42,7 +42,8 @@ function startRecording() {
    
     
   }, speed); 
-
+      document.getElementById("start").disabled = true;
+      document.getElementById("stop").disabled = false;
 }
 
 
@@ -83,3 +84,61 @@ const generateSessionId = async () => {
     return null;
   }
 };
+
+async function uploadAudioToAPI(audioBlob, sessionId) {
+  const API_ENDPOINT = "http://localhost:8000/upload/audio";
+  const formData = new FormData();
+  formData.append('file', new File([audioBlob], "audio_chunk.webm", { type: 'audio/webm' }));
+  formData.append('sessionId', sessionId);
+  try {
+      const response = await fetch(API_ENDPOINT, {
+          method: "POST",
+          body: formData,
+      });
+
+      const result = await response.json();
+      console.log("Audio uploaded:", result);
+  } catch (error) {
+      console.error("Upload failed:", error);
+  }
+}
+
+function captureTabAudio(sessionId) {
+  chrome.tabCapture.capture({ audio: true, video: false }, (stream) => {
+      if (chrome.runtime.lastError) {
+          console.error("Error capturing tab audio:", chrome.runtime.lastError.message);
+          return;
+      }
+
+      // Preserve system audio playback
+      const context = new AudioContext();
+      const newStream = context.createMediaStreamSource(stream);
+      newStream.connect(context.destination);
+
+      // Set up MediaRecorder
+      const recorder = new MediaRecorder(stream, { mimeType: 'audio/webm' });
+      let audioChunks = [];
+
+      recorder.ondataavailable = (e) => {
+          if (e.data.size > 0) {
+              audioChunks.push(e.data);
+          }
+      };
+
+      recorder.onstop = () => {
+          const audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
+          uploadAudioToAPI(audioBlob, sessionId);
+          audioChunks = [];
+      };
+
+      recorder.start();
+
+      // Stop and upload every 2 minutes (120000 ms)
+      setInterval(() => {
+          if (recorder.state === "recording") {
+              recorder.stop();
+              recorder.start();
+          }
+      }, 120000); // 2 minutes
+  });
+}
