@@ -86,12 +86,11 @@ document.addEventListener("DOMContentLoaded", () => {
   async function sendAudioToAPI(audioBlob) {
     const formData = new FormData();
     formData.append('file', new File([audioBlob],"audio.webm", { type: 'audio/webm' }));
-    formData.append('sessionId', sessionId)
     try {
       const response = await fetch(API_ENDPOINT, {
         method: "POST",
         headers: {
-          Authorization: "Bearer YOUR"
+          Authorization: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkFqbWFsIiwidXNlcl9pZCI6MSwiaWF0IjoxNzk2MjM5MDIyLCJ0eXBlIjoxfQ.sxQw-vTzENNO6xZoZp-0sD9nehwunBik49WujhXtvFA"
         },
         body: formData
       });
