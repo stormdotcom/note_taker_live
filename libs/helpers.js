@@ -2,15 +2,15 @@
 
 import { uploadAudioToAPI } from "./api.js";
 
-export function generateSessionId() {
-  return new Promise((resolve, reject) => {
-    chrome.storage.local.get(["userId"], (result) => {
-      const userId = result.userId || "guest";
-      const timestamp = Date.now();
-      const machineCode = btoa(navigator.userAgent).substring(0, 8);
-      const sessionId = `${userId}-${machineCode}-${timestamp}`;
-      resolve(sessionId);
-    });
+export function generateSessionId(callback) {
+  chrome.storage.local.get(["user"], (result) => {
+    const userId = result.userId || "guest";
+    const firstName = result.firstName || "guest";
+    const timestamp = Date.now();
+    const sessionId = `${userId}-${firstName}-${timestamp}`;
+    
+    // Pass the sessionId to the callback
+    callback(sessionId);
   });
 }
 
@@ -38,7 +38,7 @@ export function captureTabAudio(sessionId) {
 
       recorder.onstop = () => {
           const audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
-          uploadAudioToAPI(audioBlob, sessionId);
+          uploadAudioToAPI({audioBlob, sessionId, timeStamp: Date.now().toString()});
           audioChunks = [];
       };
 

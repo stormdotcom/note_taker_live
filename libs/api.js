@@ -1,5 +1,8 @@
 // api.js
-
+const accessToken = localStorage.getItem("accessToken");
+const headers =   {
+        Authorization: `Bearer ${accessToken}`,
+      };
 export async function uploadAudioToAPI({ audioBlob, sessionId, timeStamp }) {
     const API_ENDPOINT = "http://localhost:8000/upload/audio";
     const formData = new FormData();
@@ -8,7 +11,7 @@ export async function uploadAudioToAPI({ audioBlob, sessionId, timeStamp }) {
     formData.append("timeStamp", timeStamp);
   
     try {
-      const response = await fetch(API_ENDPOINT, { method: "POST", body: formData });
+      const response = await fetch(API_ENDPOINT, { method: "POST",headers, body: formData });
       const result = await response.json();
       console.log("Audio uploaded:", result);
     } catch (error) {
@@ -16,13 +19,13 @@ export async function uploadAudioToAPI({ audioBlob, sessionId, timeStamp }) {
     }
   }
   
-  export async function uploadSummaryToAPI(text, sessionId) {
+export async function uploadSummaryToAPI(text, sessionId) {
     const API_ENDPOINT = "http://localhost:8000/upload/summary";
   
     try {
       const response = await fetch(API_ENDPOINT, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json", ...headers },
         body: JSON.stringify({ summaryText: text, sessionId }),
       });
   
@@ -33,13 +36,13 @@ export async function uploadAudioToAPI({ audioBlob, sessionId, timeStamp }) {
     }
   }
   
-  export async function initiateSession({ sessionId, tabInfo, browserInfo }) {
+export async function initiateSession({ sessionId, tabInfo, browserInfo }) {
     const API_ENDPOINT = "http://localhost:8000/audio/session";
   
     try {
    await fetch(API_ENDPOINT, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json", ...headers },
         body: JSON.stringify({ sessionId, tabInfo, browserInfo, timeStamp: Date.now().toString() }),
       });
   
