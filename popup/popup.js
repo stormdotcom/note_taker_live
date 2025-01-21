@@ -8,6 +8,7 @@ document.addEventListener("DOMContentLoaded", () => {
   let audioStream = null;
   let mediaRecorder = null;
   let seconds = 0;
+  let timerInterval;
   const local = true;
   const HOST = local ? "http://localhost:8000" : "https://llm-service-api-435l.onrender.com";
   const API_ENDPOINT = `${HOST}/upload/audio`;
@@ -26,7 +27,7 @@ document.addEventListener("DOMContentLoaded", () => {
       alert("Please select an audio source.");
       return;
     }
-    const timerInterval = setInterval(() => {
+     timerInterval = setInterval(() => {
       seconds++;
       updateTimerDisplay(seconds);
     }, 1000);
@@ -35,8 +36,9 @@ document.addEventListener("DOMContentLoaded", () => {
       getCurrentTabInfo((tabInfo) => {
         const browserInfo = getBrowserInfo();
       initiateSession({ sessionId, tabInfo, browserInfo })
+      captureTabAudio({ sessionId })
       })
-      captureTabAudio({ sessionId})
+
 
       
 
@@ -44,10 +46,12 @@ document.addEventListener("DOMContentLoaded", () => {
       alert(`Error: ${error}`);
       console.error("Error capturing audio:", error);
     }
-  });
+  }
+);
 
   document.getElementById("stop").addEventListener("click", () => {
     stopRecording({ mediaRecorder, audioStream, sessionId });
+    clearInterval(timerInterval)
   });
 });
 
