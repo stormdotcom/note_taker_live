@@ -4,17 +4,17 @@ import { uploadAudioToAPI } from "./api.js";
 
 export function generateSessionId(callback) {
   chrome.storage.local.get(["user"], (result) => {
-    const userId = result.userId || "guest";
-    const firstName = result.firstName || "guest";
-    const timestamp = Date.now();
-    const sessionId = `${userId}-${firstName}-${timestamp}`;
+    const user = result.user || {}; // Ensure `user` is an object
+    const userId = user.userId || "guest"; // Extract `userId`
+    const firstName = user.firstName || "guest"; // Extract `firstName`
+    const timestamp = Date.now(); // Current timestamp
+    const sessionId = `${userId}-${firstName}-${timestamp}`; // Construct sessionId
     
-    // Pass the sessionId to the callback
-    callback(sessionId);
+    callback(sessionId); // Pass the sessionId to the callback
   });
 }
 
-export function captureTabAudio(sessionId) {
+export function captureTabAudio({sessionId}) {
   chrome.tabCapture.capture({ audio: true, video: false }, (stream) => {
       if (chrome.runtime.lastError) {
           console.error("Error capturing tab audio:", chrome.runtime.lastError.message);

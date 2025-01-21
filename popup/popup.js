@@ -14,6 +14,7 @@ document.addEventListener("DOMContentLoaded", () => {
   let sessionId=""
   document.getElementById("start").addEventListener("click", async () => {
      generateSessionId((id) => {
+      console.log("here", id)
       sessionId=id
     });
     const source = document.querySelector('input[name="audio-source"]:checked')?.value;
