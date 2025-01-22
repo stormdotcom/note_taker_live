@@ -2,18 +2,21 @@
 
 import { uploadAudioToAPI } from "./api.js";
 
-export function generateSessionId(callback) {
-  chrome.storage.local.get(["user"], (result) => {
-    const user = result.user || {}; // Ensure `user` is an object
-    const userId = user.userId || "guest"; // Extract `userId`
-    const firstName = user.firstName || "guest"; // Extract `firstName`
-    const timestamp = Date.now(); // Current timestamp
-    const sessionId = `${userId}-${firstName}-${timestamp}`; // Construct sessionId
-    
-    callback(sessionId); // Pass the sessionId to the callback
-  });
-}
-
+export function generateSessionId() {
+    return new Promise((resolve, reject) => {
+      chrome.storage.local.get(["user"], (result) => {
+        const user = result.user || {}; // Ensure `user` exists
+        const userId = user.userId || "guest"; // Extract `userId` or use "guest"
+        const uuid = generateUUID(); // Generate the UUID
+        resolve(`${userId}-${uuid}`); // Resolve the generated session ID
+      });
+    });
+  }
+function generateUUID() {
+    return ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, (c) =>
+      (c ^ (crypto.getRandomValues(new Uint8Array(1))[0] & (15 >> (c / 4)))).toString(16)
+    );
+  }
 export function captureTabAudio({sessionId}) {
   chrome.tabCapture.capture({ audio: true, video: false }, (stream) => {
       if (chrome.runtime.lastError) {

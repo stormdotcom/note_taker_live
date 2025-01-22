@@ -14,10 +14,10 @@ document.addEventListener("DOMContentLoaded", () => {
   const API_ENDPOINT = `${HOST}/upload/audio`;
   let sessionId=""
   document.getElementById("start").addEventListener("click", async () => {
-     generateSessionId((id) => {
-      console.log("here", id)
-      sessionId=id
-    });
+    generateSessionId()
+  .then((uuid) => {
+      sessionId= uuid
+  });
     const source = document.querySelector('input[name="audio-source"]:checked')?.value;
     document.getElementById("start").disabled = true;
 

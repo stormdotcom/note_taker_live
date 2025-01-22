@@ -1,10 +1,10 @@
 // api.js
 const accessToken = localStorage.getItem("accessToken");
-const headers =   {
-        Authorization: `Bearer ${accessToken}`,
-      };
+const headers =   { Authorization: `Bearer ${accessToken}` };
+const BASE_URL= "http://localhost:8000/v1";
+
 export async function uploadAudioToAPI({ audioBlob, sessionId, timeStamp }) {
-    const API_ENDPOINT = "http://localhost:8000/upload/audio";
+    const API_ENDPOINT =  `${BASE_URL}/audio/upload`;
     const formData = new FormData();
     formData.append("file", new File([audioBlob], "audio_chunk.webm", { type: "audio/webm" }));
     formData.append("sessionId", sessionId);
@@ -37,7 +37,7 @@ export async function uploadSummaryToAPI(text, sessionId) {
   }
   
 export async function initiateSession({ sessionId, tabInfo, browserInfo }) {
-    const API_ENDPOINT = "http://localhost:8000/audio/session";
+  const API_ENDPOINT =  `${BASE_URL}/session/initiate`;
   
     try {
    await fetch(API_ENDPOINT, {
