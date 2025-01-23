@@ -1,6 +1,6 @@
 import { initiateSession } from "../libs/api.js";
-import { captureTabAudio, generateSessionId } from "../libs/helpers.js";
-import { stopRecording, updateRecordingStatus, updateTimerDisplay } from "../libs/ui.js";
+import { captureTabAudio, generateSessionId, stopRecording } from "../libs/helpers.js";
+import { updateRecordingStatus, updateTimerDisplay } from "../libs/ui.js";
 import { getBrowserInfo, getCurrentTabInfo } from "../libs/utils.js";
 
 

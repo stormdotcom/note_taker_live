@@ -1,0 +1,1 @@
+export const BUFFER_LIMIT = 1 * 1024 * 1024;

@@ -28,22 +28,3 @@ export function updateTimerDisplay(seconds) {
     return `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
   }
   
-
-  export function stopRecording({ mediaRecorder, audioStream, sessionId, resetTimer = true }) {
-    if (mediaRecorder && mediaRecorder.state !== "inactive") {
-      mediaRecorder.stop();
-    }
-  
-    if (audioStream) {
-      audioStream.getTracks().forEach(track => track.stop());
-    }
-  
-    // Reset related states
-    if (resetTimer) stopTimer();
-    sessionId = "";
-    audioBuffer = []; // Clear the buffer
-  
-    // Update UI buttons
-    document.getElementById("start").disabled = false;
-    document.getElementById("stop").disabled = true;
-  }
