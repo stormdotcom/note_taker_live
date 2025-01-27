@@ -16,10 +16,21 @@ document.addEventListener("DOMContentLoaded", () => {
   document.getElementById("start").addEventListener("click", async () => {
     generateSessionId()
   .then((uuid) => {
-      sessionId= uuid
+      sessionId= uuid;
+      chrome.runtime.sendMessage({ action: "startRecording", sessionId }, (response) => {
+        if (response.success) {
+          console.log("Recording started");
+          document.getElementById("start").disabled = true;
+          document.getElementById("stop").disabled = false;
+        } else {
+          alert(`Error starting recording: ${response.error}`);
+        }
+      });
   });
+ 
     const source = document.querySelector('input[name="audio-source"]:checked')?.value;
     document.getElementById("start").disabled = true;
+    
 
     updateRecordingStatus(true);
 
